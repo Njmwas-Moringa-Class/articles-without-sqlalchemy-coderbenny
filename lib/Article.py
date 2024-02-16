@@ -1,5 +1,4 @@
-from Author import Author
-from Magazine import Magazine
+
 class Article:
 
     articles = []
@@ -9,8 +8,6 @@ class Article:
         self._magazine = magazine
         self._title = title
         Article.articles.append(self)
-        Author.add_article(magazine, title)
-        Magazine._articles.append(self)
 
     def title(self):
         return self._title

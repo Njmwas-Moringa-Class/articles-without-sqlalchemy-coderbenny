@@ -1,5 +1,3 @@
-from Article import Article
-
 class Magazine:
     
     allMags = []
@@ -16,13 +14,11 @@ class Magazine:
     def category(self):
         return self._category
 
-    @classmethod
-    def add_mag(cls, mag):
-        if mag in cls.allMags:
-            print("Magazine already exists!")
-        else:
-            cls.allMags.append(mag)
-            print("Added the magazine succesfully!")
+    def add_article(self, author, title):
+        from Article import Article
+        new_article = Article(self, author, title)
+        self._articles.append(new_article)
+        return new_article
 
     @classmethod
     def all(cls):
@@ -30,15 +26,12 @@ class Magazine:
 
     @classmethod
     def find_by_name(cls,name):
-        return next((magazine for magazine in cls.allMags if magazine.name == name), None)
+        return next((magazine for magazine in cls.allMags if magazine.name() == name), None)
     
     @classmethod
     def article_titles(cls):
-        return [article.title for magazine in cls.allMags for article in magazine._articles]
+        return [article.title() for magazine in cls.allMags for article in magazine._articles]
     
-    def contributing_authors(self):
-        authors_count = {}
-        for article in self._articles:
-            author = article.author
-            authors_count[author] = authors_count.get(author, 0) + 1
-        return [author for author, count in authors_count.items() if count > 2]
+    @classmethod
+    def contributing_authors(cls):
+        return [author for magazine in cls.allMags for author in magazine.contributors if len(author.articles()) > 2]
